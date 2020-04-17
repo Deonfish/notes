@@ -66,3 +66,10 @@ def SPFA(s, adj, n):  # return list d
 
 ```
 
+### Toplogical
+
+ ```python
+def toplogical(adj, n):
+	
+ ```
+
