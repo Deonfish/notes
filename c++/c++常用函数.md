@@ -251,6 +251,36 @@ if(mp.count(1) != 0 && mp[1] == 2) cout << "yes\n";
 | mlmp.count(key)                    |          |
 | mlmp.find(key)                     |          |
 
+要求重载`hash function`和`==符号`
+
+```c++
+template< class Key,
+    class Hash = std::hash<Key>,
+    class KeyEqual = std::equal_to<Key>,
+    class Allocator = std::allocator<Key>
+> class unordered_set;
+```
+
+```c++
+#include <unordered_set>
+struct Foo
+{
+    Foo(int _x = 0, string _id = ""): x(_x), id(_id) {}
+    ~Foo() = default;
+    int x;
+    string id;
+    bool operator==(const Foo& rhs) const
+    { return x == rhs.x; }
+};
+struct hashFuc
+{
+    size_t operator()(const Foo& c) const
+    { return c.x; }
+};
+
+unordered_set<Foo, hashFuc> hashTable;
+```
+
 
 
 ### unorderd_multiset
@@ -273,6 +303,8 @@ if(mp.count(1) != 0 && mp[1] == 2) cout << "yes\n";
 | mlst.count(key)    |          |
 | mlst.find(key)     |          |
 | mlst.contains(key) |          |
+
+同上，要求重载`hash function`和`==符号`
 
 
 
