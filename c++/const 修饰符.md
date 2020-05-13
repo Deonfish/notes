@@ -167,29 +167,33 @@ int a = 1;
 
 #### 函数传参
 
-常量引用
-
-底层const做左值，对const属性无要求
+普通对象
 
 ```c++
-void f(const int& x);
+void f(int x);				// 接受任意int类型或可转为int的类型，无论const
 ```
 
-指向常量的指针
-
-底层const做左值，对const属性无要求
+引用
 
 ```c++
-void f(const int* p);
+void f(const int& x); // 接受任意int类型/可转化为int类型参数
+void f(int& x);				// 接受int类型、int&类型，不接受const int或引用⚠️
+```
+
+指针&指向常量的指针
+
+```c++
+void f(const int* p); // 接受一个int地址或指针，无论是否const(常量指针也可)
+void f(int* p);				// 接受int地址或指针，不接受const⚠️
 ```
 
 常量指针
 
-顶层const做左值，不可以传递顶层const（指向常量的指针）
-
 ```c++
-void f(int* const p);
+void f(int* const p); // 接受相同的 int* const，或 int*
 ```
+
+
 
 ---
 
@@ -223,3 +227,20 @@ int main()
 
 ```
 
+---
+
+### const_cast
+
+把一个const对象转为非const（只是编译器通过，实际上并未转化！）
+
+我们可能调用了一个参数不是const的函数，而我们要传进去的实际参数确实const的，但是我们知道这个函数是不会对参数做修改的。于是我们就需要使用const_cast去除const限定，以便函数能够接受这个实际参数。
+
+```c++
+void func(int* p){ cout << *p << endl; }
+
+int const* p = &a;
+func(p); 									 // 错误！
+func(const_cast<int*>(p)); // 正确
+```
+
+> 改变const_cast以后的对象是未定义的！（一定改变不了原对象）

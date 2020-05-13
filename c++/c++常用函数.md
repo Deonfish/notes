@@ -526,11 +526,12 @@ cout << ss.str(); // 101
 
 ##### 最大/最小操作
 
-| 函数                         | 功能                 |
-| ---------------------------- | -------------------- |
-| max/min(a, b)                |                      |
-| max/min_element(first, last) | 寻找第一个最大元素   |
-| equal(first1, last1, first2) | 若范围内相等返回true |
+| 函数                                        | 功能                  |
+| ------------------------------------------- | --------------------- |
+| max/min(a, b)                               |                       |
+| max/min_element(first, last)                | 寻找第一个最大元素    |
+| equal(first1, last1, first2)                | 若范围内相等返回true  |
+| max_element/min_element(first, second, cmp) | 返回序列的最大/最小值 |
 
 ---
 
