@@ -134,3 +134,8 @@ transient Object[] elementData;
 
 碰到异常停止往下执行，自底向上寻找合适的catch字段，若无匹配的catch字段程序结束，若匹配到catch字段则执行catch字段及之后的代码（底层掠过的代码都得不到执行）
 
+#### 异常处理
+
+若直接`throw`出去，碰到异常时会中断并调用`e.printStackTrace()`
+
+若`try catch`，碰到异常时会执行`catch`后继续往下执行

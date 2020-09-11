@@ -19,7 +19,7 @@
 | 函数                                   | 功能                                                         |
 | -------------------------------------- | ------------------------------------------------------------ |
 | double modf(double x, double *integer) | 返回值为小数部分（小数点后的部分），并设置 integer 为整数部分 |
-| double pow(double x, double y)         | 返回 x 的 y 次幂                                             |
+| double pow(double x, double y)         | 返回 x 的 y 次幂，也可以开任意次根号                         |
 | double sqrt(double x)                  | 返回大于或等于 x 的最小的整数值                              |
 | double ceil(double x)                  | 返回大于或等于 x 的最小的整数值                              |
 | double floor(double x)                 | 返回小于或等于 x 的最大的整数值                              |
@@ -71,7 +71,7 @@
 | --------------------------- | ---- |
 | time_t time(time_t \*time); |      |
 
-####代码
+#### 代码
 
 ```c++
 //计算时间间隔(s)
@@ -95,81 +95,40 @@ cout << "Time used: " << ((double)(end - start)) / CLOCKS_PER_SEC << endl;
 
 `npos`:以字符串子集为参数的函数以 npos 为“所有到达终点的方式”指示器
 
-##### 构造函数
+#### 构造函数
 
-| 函数                     | 功能                              |
-| ------------------------ | --------------------------------- |
-| string(str)              | 生成str的复制品                   |
-| string(str, pos)         | 生成pos开头到结尾的字符串         |
-| string(str, pos, strlen) | 生成pos开头，长度为strlen的字符串 |
-| string(cstr)             | 生成c风格字符串的复制品           |
-| string(cstr, cstrlen)    | 生成cstr [0, cstrlen)的字符串     |
-| string(num, c)           | 生成包含num个c字符的串            |
-| string(beg, end)         | 生成[beg, end) 的字符串           |
+| 函数           | 功能                    |
+| -------------- | ----------------------- |
+| string(cstr)   | 生成c风格字符串的复制品 |
+| string(num, c) | 生成包含num个c字符的串  |
 
-##### 元素访问
+#### 常用函数
 
-| 函数       | 功能                                                         |
-| ---------- | ------------------------------------------------------------ |
-| operator[] |                                                              |
-| front      |                                                              |
-| back       |                                                              |
-| c_str      | 返回指向`c字符串`的`临时指针`【注】与`strcpy(cstr,s.c_str());`搭配使用 |
+| 函数                                                         | 操作                                                         |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| string& `operator[]`                                         | 插入/访问                                                    |
+| string `substr`(pos = 0, count = npos)                       | 返回[pos, pos+count)的子串                                   |
+| char* `c_str`()                                              | 返回指向`c字符串`的`只读指针`<br>【注】与`strcpy(cstr,s.c_str());`搭配使用 |
+| size_type `find` (str / ch)<br>size_type`find_first_of`(str/ch ) | 返回`字符串/字符`从pos开始第一次出现的位置                   |
+| size_type `rfind` (str / ch)<br>size_type`find_last_of`(str / ch ) | 返回最后一次出现的位置                                       |
 
-##### 操作
-
-| 函数                                                         | 操作                       |
-| ------------------------------------------------------------ | -------------------------- |
-| clear, push_back, pop_back, operator+=(后附字符到结尾)， resize |                            |
-| insert                                                       | (见下文重载)               |
-| erase                                                        | (见下文重载)               |
-| replace, copy, swap                                          | （不用）                   |
-| substr(pos = 0, count = npos)                                | 返回[pos, pos+count)的子串 |
-| getline(istream, string)                                     | 读取一行                   |
-
-*insert*
-
-```c++
-str.insert(index, count, char ch)			在index处插入count个字符ch
-str.insert(index, cstr)						在index处插入c字符串cstr
-str.insert(index, cstr, count)				在index处插入cstr的[0,count)子串
-str.insert(index, str)						在index处插入str（c++字符串）
-str.insert(index, str, index_str, count)	在index处插入str.substr(index_str, count);子串
-str.insert(iterator pos(属于str的迭代器）, first, last)		在迭代器pos处插入[first, last)的子串	
-```
-
-*erase*
-
-```
-str.erase(index)							擦除[index, end)
-str.erase(iterator pos)						擦除pos位置的字符
-str.erase(iterator first, iterator last)	擦除[first, last)
-```
-
-##### 查找
-
-| 函数                                                       | 功能                                       |
-| ---------------------------------------------------------- | ------------------------------------------ |
-| size_type find(str/cstr/ch, pos, count) ; find_first_of( ) | 寻找`字符串/字符`从pos开始第一次出现的位置 |
-| size_type rfind(str/cstr/ch, pos, count) ; find_last_of( ) | 最后一次出现的位置                         |
-
-> 若不存在则返回`npos`(整型最大值)
+> 查找若不存在则返回`npos`(整型最大值)
 >
-> 返回的是size_type(无符号整数)类型
-
-##### 非成员函数
-
-`operator+`
 
 ##### 数值转换
 
-| 函数                             | 功能                      |
-| -------------------------------- | ------------------------- |
-| stoi; stol; stoll (str, pos = 0) | 字符串转换为整数          |
-| stof; stod; stold (str, pos = 0) | 字符串转换为浮点数        |
-| to_string(value)                 | `整数/浮点数`转化为字符串 |
+| 函数                                   | 功能                      |
+| -------------------------------------- | ------------------------- |
+| `stoi`; `stol`; `stoll` (str, pos = 0) | 字符串转换为整数          |
+| `stof`;` stod`; `stold` (str, pos = 0) | 字符串转换为浮点数        |
+| `to_string`(value)                     | `整数/浮点数`转化为字符串 |
 
+##### 大小写转化
 
+```c++
+transform(input.begin(), input.end(), lower.begin(), ::tolower);
+transform(input.begin(), input.end(), upper.begin(), ::toupper);
+```
 
 ---
 
@@ -179,13 +138,12 @@ str.erase(iterator first, iterator last)	擦除[first, last)
 
 ##### 构造函数
 
-| 函数                       | 功能       |
-| -------------------------- | ---------- |
-| vector{1,2,3... } 初值列表 |            |
-| vector(count)              |            |
-| vector(count, value)       |            |
-| vector(first, last)        | 迭代器构造 |
-| vector(vector& other)      | 拷贝构造   |
+| 函数                 | 功能                       |
+| -------------------- | -------------------------- |
+| vector{1,2,3... }    | 初值列表构造               |
+| vector(count)        | 大小构造(调用默认构造函数) |
+| vector(count, value) | 大小构造                   |
+| vector(first, last)  | 迭代器构造                 |
 
 
 
@@ -196,32 +154,29 @@ str.erase(iterator first, iterator last)	擦除[first, last)
 | 函数                    | 功能                      |
 | ----------------------- | ------------------------- |
 | set(first, last)        | 迭代器构造                |
-| set(set& other)         | 拷贝构造                  |
 | set {1,2,3...} 初值列表 | initializer_list 构造函数 |
 
 ##### 成员函数
 
-| 函数           | 功能                |
-| -------------- | ------------------- |
-| st.insert(key) | 插入key值           |
-| st.count(key)  | 返回key值个数(1或0) |
-| st.find(key)   | 返回key值的迭代器   |
-
-
+| 函数                                                | 功能                | 复杂度  |
+| --------------------------------------------------- | ------------------- | ------- |
+| pair<iter,bool> `insert` (key)                      | 插入key值           | O(logn) |
+| size_type `count` (key)                             | 返回key值个数(1或0) | O(logn) |
+| iter `find` (key)                                   | 返回key值的迭代器   | O(logn) |
+| size_type `erase` (key )<br>void erase( iter pos ); | 删除元素            | O(logn) |
+| *st.begin( ) / *st.rbegin( )                        | 返回最小值/最大值   | O(1)    |
 
 ### map
 
-##### 构造函数
-
-默认构造函数 | 迭代器构造函数 | 拷贝构造函数 | initializer_list 构造函数
-
 ##### 成员函数
 
-| 函数          | 功能                                                    |
-| ------------- | ------------------------------------------------------- |
-| operator[]    | 插入元素，若不存在元素则插入(r若无显式赋值则插入默认值) |
-| mp.count(key) | 返回key个数(1或0)                                       |
-| mp.find(key)  | 返回key键的迭代器                                       |
+| 函数                                                 | 功能                                                       |         |
+| ---------------------------------------------------- | ---------------------------------------------------------- | ------- |
+| key& `operator[]`                                    | 下标符号，<br/>返回key对应元素的引用<br />可用于插入或查找 | O(logn) |
+| size_type `count` (key)                              | 返回key个数(1或0)                                          | O(logn) |
+| iter `find` (key)                                    | 返回key键的迭代器                                          | O(logn) |
+| size_type `erase` (key )<br/>void erase( iter pos ); | 删除元素                                                   | O(logn) |
+| *mp.begin( ) / *mp.rbegin( )                         | 返回最大/最小键                                            | O(1)    |
 
 ```c++
 map<int, int> mp;
@@ -239,120 +194,58 @@ if(mp.count(1) != 0 && mp[1] == 2) cout << "yes\n";
 
 > 计数hash
 
-##### 构造函数
+##### 成员函数
 
-默认构造函数 | 范围构造函数 | 复制构造函数 | initializer_list 构造函数
+| 函数                                             | 功能                                                      | 复杂度 |
+| ------------------------------------------------ | --------------------------------------------------------- | ------ |
+| key& `operator []`                               | 下标符号，<br>返回key对应元素的引用<br />可用于插入或查找 | O(1)   |
+| pair<iter,bool> `insert` (pair/initializer_list) | 插入元素                                                  | O(1)   |
+| size_type `count` (key)                          | 查找元素个数（是否存在）                                  | O(1)   |
+| iter `find` (key)                                | 查找元素的迭代器                                          | O(1)   |
+
+### unordered_set
+
+> 存在hash
 
 ##### 成员函数
 
-| 函数                               | 功能     |
-| ---------------------------------- | -------- |
-| mlmp.insert(pair/initializer_list) | 插入元素 |
-| mlmp.count(key)                    |          |
-| mlmp.find(key)                     |          |
-
-要求重载`hash function`和`==符号`
-
-```c++
-template< class Key,
-    class Hash = std::hash<Key>,
-    class KeyEqual = std::equal_to<Key>,
-    class Allocator = std::allocator<Key>
-> class unordered_set;
-```
-
-```c++
-#include <unordered_set>
-struct Foo
-{
-    Foo(int _x = 0, string _id = ""): x(_x), id(_id) {}
-    ~Foo() = default;
-    int x;
-    string id;
-    bool operator==(const Foo& rhs) const
-    { return x == rhs.x; }
-};
-struct hashFuc
-{
-    size_t operator()(const Foo& c) const
-    { return c.x; }
-};
-
-unordered_set<Foo, hashFuc> hashTable;
-```
+| 函数                                             | 功能                              | 复杂度 |
+| ------------------------------------------------ | --------------------------------- | ------ |
+| pair<iter,bool> `insert` (pair/initializer_list) | 插入元素，返回(it, 插入成功)      | O(1)   |
+| size_type `count` (key)                          | 查找元素个数（是否存在）          | O(1)   |
+| iter `find` (key)                                | 查找元素的迭代器                  | O(1)   |
+| size_type `erase` ( key )                        | 删除key元素, 返回成功删除元素个数 | O(1)   |
 
 
 
-### unorderd_multiset
+### priority_queue
 
-> 允许多个值存在的set
->
-> 计数hash
->
-> 元素顺序随机（与插入顺序不同！）
+构造：`priority_queue<int, vector<int>, CMP> q`
 
-##### 构造函数
-
-默认构造函数 | 范围构造函数 | 复制构造函数 | initializer_list 构造函数
-
-##### 成员函数
-
-| 函数               | 功能     |
-| ------------------ | -------- |
-| mlst.insert(key)   | 插入元素 |
-| mlst.count(key)    |          |
-| mlst.find(key)     |          |
-| mlst.contains(key) |          |
-
-同上，要求重载`hash function`和`==符号`
-
-
-
-#### map&set对比
-
-> map与unordered_map对比：
->
-> 用到排序特性时map更优，用到hash特性时unordered_map更优
+默认为大根堆，最大元素在堆顶
 
 ```c++
-//实现string hash
-//unordered_map比map在实现hash上更快
-map<string, int> mp{ {"a", 1}, {"b",2} };
-cout << "mp:" << endl;
-cout << mp["a"] << endl;
-cout << mp["b"] << endl;
-//
-unordered_map<string, int> mp_hash{ {"a", 1}, {"b",2} };
-cout << "mp hash:" << endl;
-cout << mp_hash["a"] << endl;
-cout << mp_hash["b"] << endl;
+template <class _Tp, class _Container = vector<_Tp>,
+          class _Compare = less<typename _Container::value_type> >
+class _LIBCPP_TEMPLATE_VIS priority_queue
 ```
 
-```c++
-//单个key映射到多个value,实现按名hash
-	struct values
-	{
-		string id, gender;
-	};
-map<string, values> mp{ {"sam", values{"123", "male"}}, {"lili", values{"222", "female"}} };
-unordered_map<string, values> mp_hash{ {"sam", values{"123", "male"}}, {"lili", values{"222", "female"}} };
-
-cout << "id= " << mp_hash["lili"].id << " gender= " << mp_hash["lili"].gender << endl;
-
-```
-
-
+| 函数               | 功能         | 复杂度  |
+| ------------------ | ------------ | ------- |
+| void `push`(value) | 插入元素     | O(logn) |
+| void `pop`( )      | 弹出顶部元素 | O(logn) |
+| value `top`( )     | 返回顶部元素 | O(1)    |
 
 ### pair
 
 构造pair
 
-1. pair<int, string> (1, "ss");
-2. make_pair(1, "ss");
+1. `pair<int, string> (1, "ss")`
+2. `make_pair(1, "ss")`
 
 元素访问：
 
-pr.first, pr.second
+`pr.first, pr.second`
 
 
 
@@ -375,7 +268,7 @@ pr.first, pr.second
 | ----------------------- | ---------------------------- |
 | <<                      | 输出                         |
 | ^,&,\|,<<,~             | 支持位运算                   |
-| []                      | 下标访问/赋值元素，最低位为0 |
+| [ ]                     | 下标访问/赋值元素，最低位为0 |
 | bs.count()              | 返回bitset中1的个数          |
 | bs.flip(void / offset)  | 所有位均取反 / offset位取反  |
 | bs.set(void / offset)   | 所有位均取1 / offset取1      |
@@ -386,29 +279,6 @@ pr.first, pr.second
 
 
 ---
-
-
-
-### 输入输出
-
-
-
-#### cin
-
-cin在读取到`EOF`时会返回`false`，读取成功返回`true`
-
-**cin.getline**
-
-```c++
-istream & getline(char* buf, int bufSize);
-istream & getline(char* buf, int bufSize, char delim);
-```
-
-
-
----
-
-
 
 #### cout
 
@@ -437,52 +307,6 @@ istream & getline(char* buf, int bufSize, char delim);
 
 
 ---
-
-
-
-#### stringstream
-
-> include \<sstream>
-
-##### 构造函数
-
-| 函数                 | 功能      |
-| -------------------- | --------- |
-| stringstream is(str) | str输入流 |
-| stringstream is      |           |
-
-##### 成员函数
-
-| 函数        | 作用                     |
-| ----------- | ------------------------ |
-| is.str();   | is中的内容`以string返回` |
-| is.str(""); | 清空stringstream中的内容 |
-| is.clear(); | 清空stringstream中的状态 |
-
-##### 代码
-
-```c++
-#include <sstream>
-//注意每次重复使用stringstream都要清空状态和内容
-
-string str = "1010"; int x;
-stringstream ss(str);
-ss >> x;
-x /= 10;
-
-//注意清空
-ss.str("");
-ss.clear();
-
-ss << x;
-cout << ss.str(); // 101
-```
-
-
-
-
-
-----
 
 
 
