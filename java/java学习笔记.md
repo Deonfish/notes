@@ -1,5 +1,45 @@
 # java学习笔记
 
+### 一些概念
+
+`JDK`：java开发者套件，用来开发java的环境，包含java SE、java虚拟机和一些java开发工具（编译器javac，打包jar工具等）。
+
+`JRE`：java运行套件，用来运行java的最小环境，包含java SE和java虚拟机。
+
+`java SE`：标准java版本，包含了必须的java库和api (java.lang, java.io,java.util, etc...)。
+
+`java EE`：企业java版本，包含了java SE，额外的库和api (JDBC, JPA, servlet, etc... )。
+
+`openJDK · OracleJDK`：二者几乎相等，下载的是oracleJDK，机器内置openJDK
+
+### 参数传递
+
+1. 传基本类型和String类型是传值（复制品）
+2. 传类类型是传引用的值（引用的复制）
+
+### final
+
+1. 修饰类
+   表示类不会被继承，final类中的方法自动为final方法。
+
+2. 修饰方法
+   防止任何子类覆盖其方法。
+
+3. 修饰引用
+
+   若修饰基本类型变量或 String ，则数值一旦确定以后不能更改（类似c++const），该变量会变成一个常量。
+   若修饰引用类型，则变量初始化以后不可以指向另一个对象，但对象本身可能改变。
+
+   ```java
+   final StringBuffer s = new StringBuffer("hello");
+   s.append(" world!"); // 可以改变对象
+   s = new StringBuffer("new hello"); // 不可以指向另一个对象
+   ```
+
+   final修饰参数：
+   若参数为基本类型，则方法中的参数为原参数的拷贝，final修饰可以使该拷贝值不变。
+   若参数为引用类型，方法中的参数为引用的拷贝，final可以使其引用不指向其他对象。
+
 ### 接口
 
 接口中的非默认方法在类中必须实现，默认方法可以不实现也可以覆盖
@@ -139,3 +179,44 @@ transient Object[] elementData;
 若直接`throw`出去，碰到异常时会中断并调用`e.printStackTrace()`
 
 若`try catch`，碰到异常时会执行`catch`后继续往下执行
+
+### 序列化
+
+把对象转换为字节序列（二进制序列）的过程称为对象的序列化。
+把字节序列恢复为对象的过程称为对象的反序列化。
+
+#### 使用场景
+
+- 对象的持久化（将对象内容保存到数据库或文件中）
+- 远程数据传输（将对象发送给其他计算机系统）
+
+对于数据的本地持久化，只需要将数据转换为字符串进行保存即可是实现（如把对象转换为jason格式存储到本地数据库），但对于远程的数据传输，由于操作系统，硬件等差异，会出现内存大小端，内存对齐等问题，导致接收端无法正确解析数据，所以要序列化为两端都可以识别的字节码，在另一端再反序列化。
+
+只有实现了Serializable和Externalizable接口的类的对象才能被序列化。Externalizable接口继承自 Serializable接口，实现Externalizable接口的类完全由自身来控制序列化的行为，而仅实现Serializable接口的类可以 采用默认的序列化方式 。
+
+```java
+public class Person implements Serializable {
+  private String name;
+  private String sex;
+  Person(String _name, String _sex) {
+    name = _name; sex = _sex;
+  }
+}
+```
+
+java.io.ObjectOutputStream代表对象输出流，它的writeObject(Object obj)方法可对参数指定的obj对象进行序列化，把得到的字节序列写到一个目标输出流中。
+java.io.ObjectInputStream代表对象输入流，它的readObject()方法从一个源输入流中读取字节序列，再把它们反序列化为一个对象，并将其返回。
+
+```java
+Person p = new Person("xiaoming", "male");
+
+ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(new File("~/Person.txt"))); // 创建输出流
+oo.writeObject(p); // 序列化
+
+ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File("~/Person.txt"))); // 创建输出流
+Person p = (Person)ois.readObject(); // 反序列化
+```
+
+此代码生成的Person.txt文件是一个二进制流文件
+
+
